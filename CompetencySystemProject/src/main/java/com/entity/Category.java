@@ -2,10 +2,17 @@ package com.entity;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 
@@ -21,6 +28,19 @@ public class Category {
 	private String title;
 	
 	private String description;
+	
+	@OneToMany(mappedBy = "category",cascade =CascadeType.ALL)
+	@JsonIgnore
+	private List<Question> questions=new ArrayList<>();
+	
+
+	public List<Question> getQuestions() {
+		return questions;
+	}
+
+	public void setQuestions(List<Question> questions) {
+		this.questions = questions;
+	}
 
 	public Long getCategory_id() {
 		return category_id;

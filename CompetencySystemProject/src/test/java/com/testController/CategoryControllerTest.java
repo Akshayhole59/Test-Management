@@ -47,7 +47,7 @@ class CategoryControllerTest {
 
 		when(categoryService.addCategory(any(Category.class))).thenReturn(category);
 
-		mockMvc.perform(MockMvcRequestBuilders.post("/test-management/api/v1/categories/addCategory")
+		mockMvc.perform(MockMvcRequestBuilders.post("/testmanagement/api/v1/categories/addCategory")
 				.content(asJsonString(category)).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andExpect(MockMvcResultMatchers.jsonPath("$.category_id").value(1L))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Test Category"))
@@ -62,7 +62,7 @@ class CategoryControllerTest {
 
 		when(categoryService.getAllCatogory()).thenReturn(categories);
 
-		mockMvc.perform(MockMvcRequestBuilders.get("/test-management/api/v1/categories/getAllCategory")
+		mockMvc.perform(MockMvcRequestBuilders.get("/testmanagement/api/v1/categories/getAllCategory")
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andExpect(MockMvcResultMatchers.jsonPath("$[0].category_id").value(1L))
 				.andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("Category 1"))
@@ -79,7 +79,7 @@ class CategoryControllerTest {
 
 		when(categoryService.getCategoryById(categoryId)).thenReturn(category);
 
-		mockMvc.perform(MockMvcRequestBuilders.get("/test-management/api/v1/categories/{categoryId}", categoryId)
+		mockMvc.perform(MockMvcRequestBuilders.get("/testmanagement/api/v1/categories/{categoryId}", categoryId)
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andExpect(MockMvcResultMatchers.jsonPath("$.category_id").value(categoryId))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Category 1"))
@@ -92,7 +92,7 @@ class CategoryControllerTest {
 
 		when(categoryService.updateCategory(any(Category.class))).thenReturn(category);
 
-		mockMvc.perform(MockMvcRequestBuilders.put("/test-management/api/v1/categories/updateCategory")
+		mockMvc.perform(MockMvcRequestBuilders.put("/testmanagement/api/v1/categories/updateCategory")
 				.content(asJsonString(category)).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andExpect(MockMvcResultMatchers.jsonPath("$.category_id").value(1L))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Updated Category"))
@@ -103,7 +103,7 @@ class CategoryControllerTest {
 	void testDeleteCategory() throws Exception {
 		Long categoryId = 1L;
 
-		mockMvc.perform(MockMvcRequestBuilders.delete("/test-management/api/v1/categories/{categoryId}", categoryId)
+		mockMvc.perform(MockMvcRequestBuilders.delete("/testmanagement/api/v1/categories/{categoryId}", categoryId)
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 	}
 

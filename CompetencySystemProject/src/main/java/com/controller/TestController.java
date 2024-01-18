@@ -2,6 +2,7 @@ package com.controller;
 
 import java.util.NoSuchElementException;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class TestController {
 	public ResponseEntity<?> addTest(@RequestBody TestManagement exam) {
 		try {
 			TestManagement test = service.addTest(exam);
-			log.info("addTest: Test added successfully with ID {}", test.getQuestionId());
+			log.info("addTest: Test added successfully with ID {}", test.getTestId());
 			return ResponseEntity.ok(test);
 		} catch (Exception e) {
 			log.error("Error adding test: {}", e.getMessage());

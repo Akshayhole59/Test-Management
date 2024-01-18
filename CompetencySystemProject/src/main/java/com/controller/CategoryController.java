@@ -20,7 +20,7 @@ import com.service.CategoryService;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequestMapping("test-management/api/v1/categories")
+@RequestMapping("/testmanagement/api/v1/categories")
 @Slf4j
 public class CategoryController {
 

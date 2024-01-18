@@ -21,7 +21,7 @@ import com.service.QuestionService;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequestMapping("/api/questions")
+@RequestMapping("/testmanagement/api/v1/questions")
 @Slf4j
 public class QuestionController {
 

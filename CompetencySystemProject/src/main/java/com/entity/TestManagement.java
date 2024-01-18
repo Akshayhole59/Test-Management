@@ -1,9 +1,14 @@
 package com.entity;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +25,7 @@ public class TestManagement {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long questionId;
+	private Long testId;
 
 	private String title;
 
@@ -31,5 +36,9 @@ public class TestManagement {
 	private String numberofQuestions;
 
 	private boolean active = false;
+	
+	@OneToMany(mappedBy = "test", cascade = CascadeType.ALL)
+	
+	private List<Question> questions;
 
 }
