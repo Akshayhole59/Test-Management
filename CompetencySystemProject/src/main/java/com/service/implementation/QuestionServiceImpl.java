@@ -1,5 +1,6 @@
 package com.service.implementation;
 
+import java.io.InputStream;
 import java.util.List;
 
 
@@ -30,7 +31,7 @@ public class QuestionServiceImpl implements QuestionService {
     public Question getQuestionById(Long id) {
         log.info("Fetching question by id: {}", id);
         return questionRepository.findById(id)
-                .orElseThrow(() -> new QuestionNotFoundException("Question not found with id: " + id));
+                .orElseThrow(() -> new QuestionNotFoundException("Question not found with id: " + id, null));
     }
 
     @Override
@@ -43,8 +44,14 @@ public class QuestionServiceImpl implements QuestionService {
     public void deleteQuestion(Long id) {
         log.info("Deleting question with id: {}", id);
         if (!questionRepository.existsById(id)) {
-            throw new QuestionNotFoundException("Question not found with id: " + id);
+            throw new QuestionNotFoundException("Question not found with id: " + id, null);
         }
         questionRepository.deleteById(id);
     }
+
+    @Override
+    public void importQuestionsFromExcel(InputStream excelInputStream) {
+     	
+		
+	}
 }
