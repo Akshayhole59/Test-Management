@@ -43,11 +43,11 @@ class CategoryControllerTest {
 
 	@Test
 	void testAddNewCategory() throws Exception {
-		Category category = new Category(1L, "Test Category", "Test Description");
+		Category category = new Category(1L, "Test Category", "Test Description", null);
 
 		when(categoryService.addCategory(any(Category.class))).thenReturn(category);
 
-		mockMvc.perform(MockMvcRequestBuilders.post("/testmanagement/api/v1/categories/addCategory")
+		mockMvc.perform(MockMvcRequestBuilders.post("/testmanagement/api/v1/categories")
 				.content(asJsonString(category)).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andExpect(MockMvcResultMatchers.jsonPath("$.category_id").value(1L))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Test Category"))
@@ -57,12 +57,12 @@ class CategoryControllerTest {
 	@Test
 	void testGetAllCategory() throws Exception {
 		ArrayList<Category> categories = new ArrayList<>();
-		categories.add(new Category(1L, "Category 1", "Description 1"));
-		categories.add(new Category(2L, "Category 2", "Description 2"));
+		categories.add(new Category(1L, "Category 1", "Description 1", null));
+		categories.add(new Category(2L, "Category 2", "Description 2", null));
 
 		when(categoryService.getAllCatogory()).thenReturn(categories);
 
-		mockMvc.perform(MockMvcRequestBuilders.get("/testmanagement/api/v1/categories/getAllCategory")
+		mockMvc.perform(MockMvcRequestBuilders.get("/testmanagement/api/v1/categories")
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andExpect(MockMvcResultMatchers.jsonPath("$[0].category_id").value(1L))
 				.andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("Category 1"))
@@ -75,7 +75,7 @@ class CategoryControllerTest {
 	@Test
 	void testGetCategoryById() throws Exception {
 		Long categoryId = 1L;
-		Category category = new Category(categoryId, "Category 1", "Description 1");
+		Category category = new Category(categoryId, "Category 1", "Description 1", null);
 
 		when(categoryService.getCategoryById(categoryId)).thenReturn(category);
 
@@ -88,11 +88,11 @@ class CategoryControllerTest {
 
 	@Test
 	void testUpdateCategory() throws Exception {
-		Category category = new Category(1L, "Updated Category", "Updated Description");
+		Category category = new Category(1L, "Updated Category", "Updated Description", null);
 
 		when(categoryService.updateCategory(any(Category.class))).thenReturn(category);
 
-		mockMvc.perform(MockMvcRequestBuilders.put("/testmanagement/api/v1/categories/updateCategory")
+		mockMvc.perform(MockMvcRequestBuilders.put("/testmanagement/api/v1/categories")
 				.content(asJsonString(category)).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andExpect(MockMvcResultMatchers.jsonPath("$.category_id").value(1L))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Updated Category"))

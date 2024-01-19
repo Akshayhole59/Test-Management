@@ -4,11 +4,12 @@ import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Table(name = "tests")
 public class TestManagement {
 
 	@Id
@@ -31,14 +33,13 @@ public class TestManagement {
 
 	private String description;
 
-	private String maxMarks;
+	private int maxMarks;
 
-	private String numberofQuestions;
+	private int numberofQuestions;
 
 	private boolean active = false;
-	
-	@OneToMany(mappedBy = "test", cascade = CascadeType.ALL)
-	
+
+	@ManyToMany(mappedBy = "tests")
 	private List<Question> questions;
 
 }

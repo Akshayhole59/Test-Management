@@ -85,7 +85,7 @@ public class QuestionControllerTest {
 		mockMvc.perform(MockMvcRequestBuilders.put("/testmanagement/api/v1/questions/{id}", questionId)
 				.contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(updatedQuestion)))
 				.andExpect(status().isOk()).andExpect(jsonPath("$.questionId").value(questionId))
-				.andExpect(jsonPath("$.content").value(updatedQuestion.getContent())); // Check for the updated content
+				.andExpect(jsonPath("$.content").value(updatedQuestion.getContent())); 
 	}
 
 	@Test
@@ -97,7 +97,6 @@ public class QuestionControllerTest {
 
 		mockMvc.perform(MockMvcRequestBuilders.delete("/testmanagement/api/v1/questions/{id}", questionId)).andExpect(status().isOk());
 
-		// Verify that deleteQuestion is called
 		verify(questionService).deleteQuestion(questionId);
 	}
 }

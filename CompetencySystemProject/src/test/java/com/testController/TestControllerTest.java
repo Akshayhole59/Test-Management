@@ -61,8 +61,8 @@ public class TestControllerTest {
 	@Test
 	void updateTest() {
 		Long testId = 1L;
-		TestManagement existingTest = new TestManagement(/* provide necessary data for the test */);
-		TestManagement updatedTest = new TestManagement(/* provide necessary data for the test */);
+		TestManagement existingTest = new TestManagement();
+		TestManagement updatedTest = new TestManagement();
 		when(testService.getTestById(testId)).thenReturn(existingTest);
 		when(testService.updateTest(existingTest)).thenReturn(updatedTest);
 		ResponseEntity<?> responseEntity = testController.updateTest(testId, updatedTest);

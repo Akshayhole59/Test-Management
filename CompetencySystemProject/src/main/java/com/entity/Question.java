@@ -1,10 +1,14 @@
 package com.entity;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -36,7 +40,8 @@ public class Question {
 	@JoinColumn(name = "category_id")
 	private Category category;
 
-	@ManyToOne
-	@JoinColumn(name = "test_id")
-	private TestManagement test;
+	@ManyToMany  
+	@JoinTable(name = "question_test",joinColumns = @JoinColumn(name = "question_id"),inverseJoinColumns = @JoinColumn(name = "test_id"))   
+	private List<TestManagement> tests;
+
 }

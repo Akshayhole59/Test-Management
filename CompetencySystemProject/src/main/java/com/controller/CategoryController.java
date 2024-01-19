@@ -27,13 +27,13 @@ public class CategoryController {
 	@Autowired
 	private CategoryService categoryService;
 
-	@PostMapping("/addCategory")
+	@PostMapping
 	public Category addNewCategory(@RequestBody Category category) {
 		log.info("Adding a new category: {}", category);
 		return categoryService.addCategory(category);
 	}
 
-	@GetMapping("/getAllCategory")
+	@GetMapping
 	public ArrayList<Category> getAllCategory() {
 		log.info("Getting all categories");
 		return categoryService.getAllCatogory();
@@ -50,7 +50,7 @@ public class CategoryController {
 		}
 	}
 
-	@PutMapping("/updateCategory")
+	@PutMapping
 	public ResponseEntity<Category> updateCategory(@RequestBody Category category) {
 		try {
 			log.info("Updating category: {}", category);

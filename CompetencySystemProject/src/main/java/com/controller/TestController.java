@@ -29,7 +29,7 @@ public class TestController {
 	@Autowired
 	TestService service;
 
-	@PostMapping("/addTest")
+	@PostMapping
 	public ResponseEntity<?> addTest(@RequestBody TestManagement exam) {
 		try {
 			TestManagement test = service.addTest(exam);
@@ -65,7 +65,7 @@ public class TestController {
 		}
 	}
 
-	@GetMapping("/getAllTest")
+	@GetMapping
 	public ResponseEntity<?> getAllTest() {
 		try {
 			log.info("getAllTest: Retrieving all tests");
@@ -76,7 +76,7 @@ public class TestController {
 		}
 	}
 
-	@PutMapping("/updateTest/{testId}")
+	@PutMapping("/{testId}")
 	public ResponseEntity<?> updateTest(@PathVariable Long testId, @RequestBody TestManagement updatedTest) {
 		if (testId == null) {
 			log.error("Invalid request: Test ID is null");
@@ -103,7 +103,7 @@ public class TestController {
 		}
 	}
 
-	@DeleteMapping("/deleteTestById/{testId}")
+	@DeleteMapping("/{testId}")
 	public ResponseEntity<String> deleteTest(@PathVariable("testId") Long testId) {
 		if (testId == null) {
 			log.error("Invalid request: Test ID is null");
