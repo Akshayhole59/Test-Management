@@ -50,15 +50,21 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
+    <groupId>org.apache.poi</groupId>
+    <artifactId>poi</artifactId>
+    <version>5.0.0</version>
+</dependency>
+		
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.bnt</groupId>
-			<artifactId>compentancy</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+    <groupId>com</groupId>
+    <artifactId>CompentancySystemProject</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+</dependency>
 	</dependencies>
 
 	<build>
