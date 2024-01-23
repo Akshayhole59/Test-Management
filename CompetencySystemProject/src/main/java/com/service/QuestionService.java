@@ -1,5 +1,6 @@
 package com.service;
 
+import java.io.InputStream;
 import java.util.List;
 
 
@@ -16,4 +17,6 @@ public interface QuestionService {
     Question saveQuestion(Question question);
 
     void deleteQuestion(Long id);
+
+	void importQuestionsFromExcel(InputStream excelInputStream);
 }
