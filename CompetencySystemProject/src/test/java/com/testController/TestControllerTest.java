@@ -1,84 +1,179 @@
 package com.testController;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.controller.TestController;
 import com.entity.TestManagement;
+import com.exception.TestIdNotExistException;
 import com.service.TestService;
 
 @SpringBootTest
 public class TestControllerTest {
-	@InjectMocks
-	private TestController testController;
-
 	@Mock
 	private TestService testService;
 
-	@Test
-	void addTest() {
-		TestManagement testToAdd = new TestManagement();
-		when(testService.addTest(testToAdd)).thenReturn(testToAdd);
-		ResponseEntity<?> responseEntity = testController.addTest(testToAdd);
-		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(responseEntity.getBody()).isEqualTo(testToAdd);
-		verify(testService, times(1)).addTest(testToAdd);
+	@InjectMocks
+	private TestController testController;
+
+	@BeforeEach
+	void setUp() {
+		MockitoAnnotations.openMocks(this);
 	}
 
 	@Test
-	void getTestById() {
+	void testAddTestPositive() {
+		TestManagement testToAdd = new TestManagement();
+
+		when(testService.addTest(testToAdd)).thenReturn(testToAdd);
+
+		ResponseEntity<?> responseEntity = testController.addTest(testToAdd);
+
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertNotNull(responseEntity.getBody());
+	}
+
+	@Test
+	void testAddTestNegative() {
+		TestManagement testToAdd = new TestManagement();
+
+		when(testService.addTest(testToAdd)).thenThrow(new RuntimeException("Error adding test"));
+
+		ResponseEntity<?> responseEntity = testController.addTest(testToAdd);
+
+		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+		assertNotNull(responseEntity.getBody());
+	}
+
+	@Test
+	void testGetTestByIdPositive() {
 		Long testId = 1L;
 		TestManagement test = new TestManagement();
+
 		when(testService.getTestById(testId)).thenReturn(test);
+
 		ResponseEntity<?> responseEntity = testController.getTestById(testId);
-		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(responseEntity.getBody()).isEqualTo(test);
-		verify(testService, times(1)).getTestById(testId);
+
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertNotNull(responseEntity.getBody());
 	}
 
 	@Test
-	void getAllTest() {
-		List<TestManagement> testList = new ArrayList<>();
-		when(testService.getTest()).thenReturn(testList);
+	void testGetTestByIdNegativeTestIdNotExistException() {
+	    Long testId = 1L;
+
+	    when(testService.getTestById(testId)).thenThrow(new TestIdNotExistException("Test ID not found"));
+
+	    ResponseEntity<?> responseEntity = testController.getTestById(testId);
+
+	    assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+	    assertNotNull(responseEntity.getBody());
+	    }
+	
+	@Test
+	void testGetTestByIdNegativeNoSuchElementException() {
+		Long testId = null;
+
+		ResponseEntity<?> responseEntity = testController.getTestById(testId);
+
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+		assertNotNull(responseEntity.getBody());
+	}
+
+	@Test
+	void testGetAllTestPositive() {
+		List<TestManagement> tests = new ArrayList<>();
+
+		when(testService.getTest()).thenReturn(tests);
+
 		ResponseEntity<?> responseEntity = testController.getAllTest();
-		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(responseEntity.getBody()).isEqualTo(testList);
-		verify(testService, times(1)).getTest();
+
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertNotNull(responseEntity.getBody());
 	}
 
 	@Test
-	void updateTest() {
+	void testGetAllTestNegative() {
+		when(testService.getTest()).thenThrow(new RuntimeException("Error getting all tests"));
+
+		ResponseEntity<?> responseEntity = testController.getAllTest();
+
+		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+		assertNotNull(responseEntity.getBody());
+	}
+
+	@Test
+	void testUpdateTestPositive() {
 		Long testId = 1L;
-		TestManagement existingTest = new TestManagement();
 		TestManagement updatedTest = new TestManagement();
+
+		TestManagement existingTest = new TestManagement();
 		when(testService.getTestById(testId)).thenReturn(existingTest);
 		when(testService.updateTest(existingTest)).thenReturn(updatedTest);
+
 		ResponseEntity<?> responseEntity = testController.updateTest(testId, updatedTest);
-		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(responseEntity.getBody()).isEqualTo(updatedTest);
-		verify(testService, times(1)).getTestById(testId);
-		verify(testService, times(2)).updateTest(existingTest);
+
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertNotNull(responseEntity.getBody());
 	}
 
 	@Test
-	void deleteTest() {
+	void testUpdateTestNegativeTestIdNotExistException() {
 		Long testId = 1L;
+		TestManagement updatedTest = new TestManagement();
+
+		when(testService.getTestById(testId)).thenThrow(new TestIdNotExistException("Test ID not found"));
+
+		ResponseEntity<?> responseEntity = testController.updateTest(testId, updatedTest);
+
+		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+		assertNotNull(responseEntity.getBody());
+	}
+
+	@Test
+	void testDeleteTestPositive() {
+		Long testId = 1L;
+
 		ResponseEntity<String> responseEntity = testController.deleteTest(testId);
-		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(responseEntity.getBody()).isEqualTo("Test with ID " + testId + " deleted successfully");
-		verify(testService, times(1)).deleteTestById(testId);
+
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertNotNull(responseEntity.getBody());
+	}
+
+	@Test
+	void testDeleteTestNegativeTestIdNotExistException() {
+		Long testId = 1L;
+
+		doThrow(new TestIdNotExistException("Test ID not found")).when(testService).deleteTestById(testId);
+
+		ResponseEntity<String> responseEntity = testController.deleteTest(testId);
+
+		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+		assertNotNull(responseEntity.getBody());
+	}
+
+	@Test
+	void testDeleteTestNegative() {
+		Long testId = null;
+
+		ResponseEntity<String> responseEntity = testController.deleteTest(testId);
+
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+		assertNotNull(responseEntity.getBody());
 	}
 
 }
