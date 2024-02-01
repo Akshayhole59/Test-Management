@@ -2,6 +2,9 @@ package com.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -40,8 +43,18 @@ public class Question {
 	@JoinColumn(name = "category_id")
 	private Category category;
 
-	@ManyToMany  
-	@JoinTable(name = "question_test",joinColumns = @JoinColumn(name = "question_id"),inverseJoinColumns = @JoinColumn(name = "test_id"))   
+	@JsonIgnore
+	@ManyToMany(mappedBy = "questions", cascade = CascadeType.ALL)
 	private List<TestManagement> tests;
+
+	@Override
+	public String toString() {
+		return "Question [questionId=" + questionId + ", content=" + content + ", option1=" + option1 + ", option2="
+				+ option2 + ", option3=" + option3 + ", option4=" + option4 + ", answer=" + answer + ", marks=" + marks
+				+ ", category=" + category + ", tests=" + tests + "]";
+	}
+	
+	
+	
 
 }

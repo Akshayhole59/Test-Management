@@ -75,10 +75,7 @@ public class QuestionController {
 		}
 	}
 	
-<<<<<<< HEAD
 	
-}
-=======
 	 @PostMapping("/import")
 	    public ResponseEntity<String> importQuestions(@RequestParam("file") MultipartFile file) {
 	        if (file.isEmpty()) {
@@ -97,4 +94,3 @@ public class QuestionController {
 	 
 	 
 	}
->>>>>>> 0f77a2f8d16cfd8814b25826f7eb9946dda00b87

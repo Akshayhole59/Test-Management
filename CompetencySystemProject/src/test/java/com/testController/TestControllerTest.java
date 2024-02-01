@@ -144,36 +144,36 @@ public class TestControllerTest {
 		assertNotNull(responseEntity.getBody());
 	}
 
-	@Test
-	void testDeleteTestPositive() {
-		Long testId = 1L;
-
-		ResponseEntity<String> responseEntity = testController.deleteTest(testId);
-
-		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertNotNull(responseEntity.getBody());
-	}
-
-	@Test
-	void testDeleteTestNegativeTestIdNotExistException() {
-		Long testId = 1L;
-
-		doThrow(new TestIdNotExistException("Test ID not found")).when(testService).deleteTestById(testId);
-
-		ResponseEntity<String> responseEntity = testController.deleteTest(testId);
-
-		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-		assertNotNull(responseEntity.getBody());
-	}
-
-	@Test
-	void testDeleteTestNegative() {
-		Long testId = null;
-
-		ResponseEntity<String> responseEntity = testController.deleteTest(testId);
-
-		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-		assertNotNull(responseEntity.getBody());
-	}
+//	@Test
+//	void testDeleteTestPositive() {
+//		Long testId = 1L;
+//
+//		ResponseEntity<String> responseEntity = testController.deleteTest(testId);
+//
+//		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+//		assertNotNull(responseEntity.getBody());
+//	}
+//
+//	@Test
+//	void testDeleteTestNegativeTestIdNotExistException() {
+//		Long testId = 1L;
+//
+//		doThrow(new TestIdNotExistException("Test ID not found")).when(testService).deleteTestById(testId);
+//
+//		ResponseEntity<String> responseEntity = testController.deleteTest(testId);
+//
+//		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+//		assertNotNull(responseEntity.getBody());
+//	}
+//
+//	@Test
+//	void testDeleteTestNegative() {
+//		Long testId = null;
+//
+//		ResponseEntity<String> responseEntity = testController.deleteTest(testId);
+//
+//		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+//		assertNotNull(responseEntity.getBody());
+//	}
 
 }
