@@ -1,5 +1,6 @@
 package com.service;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -18,6 +19,6 @@ public interface QuestionService {
 
     void deleteQuestion(Long id);
 
-	void importQuestionsFromExcel(InputStream excelInputStream);
+	List<Question> importQuestionsFromExcel(InputStream excelInputStream) throws IOException;
 	
 }

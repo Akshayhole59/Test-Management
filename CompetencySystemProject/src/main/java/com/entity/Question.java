@@ -18,11 +18,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "questions")
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Question {
@@ -37,7 +39,7 @@ public class Question {
 	private String option3;
 	private String option4;
 	private String answer;
-	private int marks;
+	private String marks;
 
 	@ManyToOne
 	@JoinColumn(name = "category_id")
@@ -47,12 +49,7 @@ public class Question {
 	@ManyToMany(mappedBy = "questions", cascade = CascadeType.ALL)
 	private List<TestManagement> tests;
 
-	@Override
-	public String toString() {
-		return "Question [questionId=" + questionId + ", content=" + content + ", option1=" + option1 + ", option2="
-				+ option2 + ", option3=" + option3 + ", option4=" + option4 + ", answer=" + answer + ", marks=" + marks
-				+ ", category=" + category + ", tests=" + tests + "]";
-	}
+	
 	
 	
 	

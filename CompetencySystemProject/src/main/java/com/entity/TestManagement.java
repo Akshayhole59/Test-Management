@@ -47,5 +47,8 @@ public class TestManagement {
 	    inverseJoinColumns = @JoinColumn(name = "question_id")
 	)
 	private List<Question> questions;
+	
+	
+	
 
 }
