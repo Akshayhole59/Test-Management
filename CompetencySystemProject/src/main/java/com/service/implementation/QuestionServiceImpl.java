@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.entity.Question;
+import com.entity.TestManagement;
 import com.exception.CategoryNotFoundException;
 import com.exception.QuestionNotFoundException;
 import com.repository.CategoryRepository;
@@ -63,6 +64,9 @@ public class QuestionServiceImpl implements QuestionService {
         }
         questionRepository.deleteById(id);
     }
+    
+    
+   
 
     @Override
     public List<Question> importQuestionsFromExcel(InputStream excelInputStream) throws IOException {

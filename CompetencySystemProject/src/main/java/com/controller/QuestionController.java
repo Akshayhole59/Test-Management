@@ -76,21 +76,36 @@ public class QuestionController {
 	}
 	
 	
-	 @PostMapping("/import")
-	    public ResponseEntity<String> importQuestions(@RequestParam("file") MultipartFile file) {
-		 System.out.println("In The importQuestionServices");
-	        if (file.isEmpty()) {
-	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please provide an Excel file");
-	        }
-
-	        try (InputStream excelInputStream = file.getInputStream()) {
-	            questionService.importQuestionsFromExcel(excelInputStream);
-	            return ResponseEntity.ok("Questions imported successfully");
-	        } catch (IOException e) {
-	            log.error("Error importing questions from Excel", e);
-	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error importing questions");
-	        }
-	    }
+//	 @PostMapping("/import")
+//	    public ResponseEntity<String> importQuestions(@RequestParam("file") MultipartFile file) {
+//		 System.out.println("In The importQuestionServices");
+//	        if (file.isEmpty()) {
+//	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please provide an Excel file");
+//	        }
+//
+//	        try (InputStream excelInputStream = file.getInputStream()) {
+//	            questionService.importQuestionsFromExcel(excelInputStream);
+//	            return ResponseEntity.ok("Questions imported successfully");
+//	        } catch (IOException e) {
+//	            log.error("Error importing questions from Excel", e);
+//	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error importing questions");
+//	        }
+//	    }
+	
+	
+	
+	@PostMapping("/import")
+    public ResponseEntity<List<Question>> importQuestions(@RequestParam("file") MultipartFile file) {
+        try {
+            log.info("Importing questions from Excel file");
+            InputStream excelInputStream = file.getInputStream();
+            List<Question> importedQuestions = questionService.importQuestionsFromExcel(excelInputStream);
+            return ResponseEntity.ok(importedQuestions);
+        } catch (IOException e) {
+            log.error("Error importing questions from Excel file: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 	 
 	 
 	
