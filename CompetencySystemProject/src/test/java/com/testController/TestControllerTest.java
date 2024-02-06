@@ -2,25 +2,41 @@ package com.testController;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.controller.TestController;
+import com.entity.Question;
 import com.entity.TestManagement;
+import com.exception.QuestionNotFoundException;
 import com.exception.TestIdNotExistException;
 import com.service.TestService;
+import static org.springframework.http.HttpStatus.OK;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class TestControllerTest {
@@ -29,6 +45,7 @@ public class TestControllerTest {
 
 	@InjectMocks
 	private TestController testController;
+	
 
 	@BeforeEach
 	void setUp() {
@@ -144,36 +161,34 @@ public class TestControllerTest {
 		assertNotNull(responseEntity.getBody());
 	}
 
-//	@Test
-//	void testDeleteTestPositive() {
-//		Long testId = 1L;
-//
-//		ResponseEntity<String> responseEntity = testController.deleteTest(testId);
-//
-//		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-//		assertNotNull(responseEntity.getBody());
-//	}
-//
-//	@Test
-//	void testDeleteTestNegativeTestIdNotExistException() {
-//		Long testId = 1L;
-//
-//		doThrow(new TestIdNotExistException("Test ID not found")).when(testService).deleteTestById(testId);
-//
-//		ResponseEntity<String> responseEntity = testController.deleteTest(testId);
-//
-//		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//		assertNotNull(responseEntity.getBody());
-//	}
-//
-//	@Test
-//	void testDeleteTestNegative() {
-//		Long testId = null;
-//
-//		ResponseEntity<String> responseEntity = testController.deleteTest(testId);
-//
-//		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-//		assertNotNull(responseEntity.getBody());
-//	}
+	@Test
+	void testDeleteTestPositive() {
+		Long testId = 1L;
+		    doNothing().when(testService).deleteTestById(testId);
+		    testController.deleteTest(testId);
+		    assertEquals(OK.value(), HttpServletResponse.SC_OK);
+	        verify(testService).deleteTestById(testId);
+	}
+
+	@Test
+  void testDeleteTestNegativeTestIdNotExistException() {
+		
+		 Long nonExistentTestId = 999L;
+		 doThrow(new TestIdNotExistException("Test not found")).when(testService).deleteTestById(nonExistentTestId);
+         assertThrows(ResponseStatusException.class, () -> testController.deleteTest(nonExistentTestId));
+         verify(testService).deleteTestById(nonExistentTestId);
+
+   }
+
+	@Test
+	void testDeleteTestNegative() {
+		Long nullTestId = null;
+	    ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> testController.deleteTest(nullTestId));
+	    verify(testService, never()).deleteTestById(nullTestId);
+	    assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+        assertEquals("Test id is null", exception.getReason());
+	}
+	
+	
 
 }

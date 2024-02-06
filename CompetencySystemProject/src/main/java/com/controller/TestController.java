@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.entity.TestManagement;
 import com.exception.QuestionNotFoundException;
@@ -34,7 +35,8 @@ public class TestController {
 
 	@PostMapping
 	public ResponseEntity<?> addTest(@RequestBody TestManagement exam) {
-		try {System.out.println("In the add test");
+		try {
+			 System.out.println("In the add test");
 			 System.out.println(exam);
 			TestManagement test = service.addTest(exam);
 			log.info("addTest: Test added successfully with ID {}", test.getTestId());
@@ -108,31 +110,21 @@ public class TestController {
 		}
 	}
 
-//	@DeleteMapping("/{testId}")
-//	public ResponseEntity<String> deleteTest(@PathVariable("testId") Long testId) {
-//		if (testId == null) {
-//			log.error("Invalid request: Test ID is null");
-//			return ResponseEntity.badRequest().body("Test ID cannot be null");
-//		}
-//
-//		try {
-//			service.deleteTestById(testId);
-//			log.info("deleteTest: Test with ID {} deleted successfully", testId);
-//			return ResponseEntity.ok("Test with ID " + testId + " deleted successfully");
-//		} catch (TestIdNotExistException e) {
-//			log.error("Error deleting test with ID {}: {}", testId, e.getMessage());
-//			return ResponseEntity.status(500).body("Id is not available");
-//		}
-//	}
+
 	
 	
 	@DeleteMapping("/{testId}")
 	public void deleteTest(@PathVariable Long testId) {
+		if (testId == null) {	
+			log.error("Invalid request: Test ID is null");
+			 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Test id is null");
+	   }
 		try {
-			//log.info("Deleting question with id: {}", id);
+			log.info("Deleting question with id: {}", testId);
 			service.deleteTestById(testId);
-		} catch (QuestionNotFoundException ex) {
+		} catch (TestIdNotExistException ex) {
 			log.error("Error deleting question with id {}: {}", testId, ex.getMessage());
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Test not found", ex);
 		}
 	}
 }

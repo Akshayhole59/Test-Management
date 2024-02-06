@@ -1,24 +1,23 @@
 package com.controller;
 
-import java.util.ArrayList;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.entity.Category;
 import com.exception.CategoryNotFoundException;
 import com.service.CategoryService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.ArrayList;
+
 
 @RestController
 @CrossOrigin("*")
@@ -29,18 +28,21 @@ public class CategoryController {
 	@Autowired
 	private CategoryService categoryService;
 
+	
 	@PostMapping
 	public Category addNewCategory(@RequestBody Category category) {
 		log.info("Adding a new category: {}", category);
 		return categoryService.addCategory(category);
 	}
 
+	
 	@GetMapping
 	public ArrayList<Category> getAllCategory() {
 		log.info("Getting all categories");
 		return categoryService.getAllCatogory();
 	}
 
+	
 	@GetMapping("/{categoryId}")
 	public ResponseEntity<?> getCategoryById(@PathVariable("categoryId") Long categoryId) {
 		try {
@@ -80,6 +82,7 @@ public class CategoryController {
 		}
 	}
 
+	
 	@DeleteMapping("/{categoryId}")
 	public ResponseEntity<?> deleteCategory(@PathVariable("categoryId") Long categoryId) {
 		try {

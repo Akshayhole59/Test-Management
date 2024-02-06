@@ -83,8 +83,12 @@ public class QuestionServiceImpl implements QuestionService {
             question.setOption4(getCellValue(row.getCell(4)));
             question.setAnswer(getCellValue(row.getCell(5)));
             question.setMarks(getCellValue(row.getCell(6)));
- 
-            importedQuestions.add(questionRepository.save(question));
+                
+            if(question.getContent() != null && !question.getContent().isEmpty()) {
+            if(!(question.getContent().equalsIgnoreCase("content"))){
+            	 importedQuestions.add(questionRepository.save(question));
+            }
+            }
         }
  
         return importedQuestions;
