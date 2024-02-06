@@ -36,8 +36,8 @@ public class QuestionControllerTest {
 	@Test
 	public void testGetAllQuestions() throws Exception {
 		List<Question> questions = List.of(
-				new Question(1L, "Question 1", "Option 1", "Option 2", "Option 3", "Option 4", "Answer 1", 10, null, null),
-				new Question(2L, "Question 2", "Option 1", "Option 2", "Option 3", "Option 4", "Answer 2", 15, null, null));
+				new Question(1L, "Question 1", "Option 1", "Option 2", "Option 3", "Option 4", "Answer 1", "10", null, null),
+				new Question(2L, "Question 2", "Option 1", "Option 2", "Option 3", "Option 4", "Answer 2", "15", null, null));
 
 		when(questionService.getAllQuestions()).thenReturn(questions);
 
@@ -49,7 +49,7 @@ public class QuestionControllerTest {
 	public void testGetQuestionById() throws Exception {
 		long questionId = 1L;
 		Question question = new Question(questionId, "Question 1", "Option 1", "Option 2", "Option 3", "Option 4",
-				"Answer 1", 10, null, null);
+				"Answer 1","10", null, null);
 
 		when(questionService.getQuestionById(questionId)).thenReturn(question);
 
@@ -60,9 +60,9 @@ public class QuestionControllerTest {
 	@Test
 	public void testCreateQuestion() throws Exception {
 		Question questionToCreate = new Question(null, "New Question", "Option 1", "Option 2", "Option 3", "Option 4",
-				"Answer", 5, null, null);
+				"Answer", "5", null, null);
 		Question createdQuestion = new Question(1L, "New Question", "Option 1", "Option 2", "Option 3", "Option 4",
-				"Answer", 5, null, null);
+				"Answer", "5", null, null);
 
 		when(questionService.saveQuestion(any(Question.class))).thenReturn(createdQuestion);
 
@@ -75,9 +75,9 @@ public class QuestionControllerTest {
 	public void testUpdateQuestion() throws Exception {
 		long questionId = 1L;
 		Question existingQuestion = new Question(questionId, "Existing Question", "Option 1", "Option 2", "Option 3",
-				"Option 4", "Answer", 10, null, null);
+				"Option 4", "Answer", "10", null, null);
 		Question updatedQuestion = new Question(questionId, "Updated Question", "Option 1", "Option 2", "Option 3",
-				"Option 4", "Answer", 15, null, null);
+				"Option 4", "Answer", "15", null, null);
 
 		when(questionService.getQuestionById(questionId)).thenReturn(existingQuestion);
 		when(questionService.saveQuestion(any(Question.class))).thenReturn(updatedQuestion);
@@ -93,7 +93,7 @@ public class QuestionControllerTest {
 		long questionId = 1L;
 
 		when(questionService.getQuestionById(questionId)).thenReturn(
-				new Question(questionId, "Question", "Option 1", "Option 2", "Option 3", "Option 4", "Answer", 10, null, null));
+				new Question(questionId, "Question", "Option 1", "Option 2", "Option 3", "Option 4", "Answer","10", null, null));
 
 		mockMvc.perform(MockMvcRequestBuilders.delete("/testmanagement/api/v1/questions/{id}", questionId)).andExpect(status().isOk());
 

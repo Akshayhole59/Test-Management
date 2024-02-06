@@ -7,8 +7,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,7 +40,15 @@ public class TestManagement {
 
 	private boolean active = false;
 
-	@ManyToMany(mappedBy = "tests")
+	@ManyToMany
+	@JoinTable(
+	    name = "question_test",
+	    joinColumns = @JoinColumn(name = "test_id"),
+	    inverseJoinColumns = @JoinColumn(name = "question_id")
+	)
 	private List<Question> questions;
+	
+	
+	
 
 }

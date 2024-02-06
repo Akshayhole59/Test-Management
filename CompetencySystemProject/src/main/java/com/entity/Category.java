@@ -4,6 +4,9 @@ package com.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,6 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 
 
@@ -22,8 +26,10 @@ import lombok.Setter;
 @Table(name="category")
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Category {
 	
 	@Id
@@ -35,7 +41,11 @@ public class Category {
 	private String description;
 	
 	@OneToMany(mappedBy = "category",cascade = CascadeType.ALL)
+	@JsonIgnore
     private List<Question> questions;
+
+	
+	
 	
 	
 	

@@ -58,5 +58,9 @@ public class CategoryServiceImple implements CategoryService {
 		}
 
 	}
+	
+	public boolean exists(Long categoryId) {
+		return categoryRepository.existsById(categoryId);
+	}
 
 }

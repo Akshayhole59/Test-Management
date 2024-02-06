@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,14 +15,17 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.entity.TestManagement;
+import com.exception.QuestionNotFoundException;
 import com.exception.TestIdNotExistException;
 import com.service.TestService;
 
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/testmanagement/api/v1/tests")
 @Slf4j
 public class TestController {
@@ -32,6 +36,8 @@ public class TestController {
 	@PostMapping
 	public ResponseEntity<?> addTest(@RequestBody TestManagement exam) {
 		try {
+			 System.out.println("In the add test");
+			 System.out.println(exam);
 			TestManagement test = service.addTest(exam);
 			log.info("addTest: Test added successfully with ID {}", test.getTestId());
 			return ResponseEntity.ok(test);
@@ -44,6 +50,7 @@ public class TestController {
 	@GetMapping("/{testId}")
 	public ResponseEntity<?> getTestById(@PathVariable("testId") Long testId) {
 		if (testId == null) {
+			System.out.println("In the test-delete system");
 			log.error("Invalid request: Test ID is null");
 			return ResponseEntity.badRequest().body("Test ID cannot be null");
 		}
@@ -103,20 +110,21 @@ public class TestController {
 		}
 	}
 
-	@DeleteMapping("/{testId}")
-	public ResponseEntity<String> deleteTest(@PathVariable("testId") Long testId) {
-		if (testId == null) {
-			log.error("Invalid request: Test ID is null");
-			return ResponseEntity.badRequest().body("Test ID cannot be null");
-		}
 
+	
+	
+	@DeleteMapping("/{testId}")
+	public void deleteTest(@PathVariable Long testId) {
+		if (testId == null) {	
+			log.error("Invalid request: Test ID is null");
+			 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Test id is null");
+	   }
 		try {
+			log.info("Deleting question with id: {}", testId);
 			service.deleteTestById(testId);
-			log.info("deleteTest: Test with ID {} deleted successfully", testId);
-			return ResponseEntity.ok("Test with ID " + testId + " deleted successfully");
-		} catch (TestIdNotExistException e) {
-			log.error("Error deleting test with ID {}: {}", testId, e.getMessage());
-			return ResponseEntity.status(500).body("Id is not available");
+		} catch (TestIdNotExistException ex) {
+			log.error("Error deleting question with id {}: {}", testId, ex.getMessage());
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Test not found", ex);
 		}
 	}
 }
