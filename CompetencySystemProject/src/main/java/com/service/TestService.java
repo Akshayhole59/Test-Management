@@ -2,17 +2,18 @@ package com.service;
 
 import java.util.List;
 
-import com.entity.TestManagement;
+import com.entity.Test;
+
 
 public interface TestService {
 
-	public TestManagement addTest(TestManagement test);
+	public Test addTest(Test test);
 
-	public TestManagement updateTest(TestManagement test);
+	public Test updateTest(Test test);
 
-	public List<TestManagement> getTest();
+	public List<Test> getTest();
 
-	public TestManagement getTestById(Long testId);
+	public Test getTestById(Long testId);
 
 	public void deleteTestById(Long testId);
 }

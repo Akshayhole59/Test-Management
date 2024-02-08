@@ -6,15 +6,23 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.controller.QuestionController;
 import com.entity.Question;
@@ -99,4 +107,44 @@ public class QuestionControllerTest {
 
 		verify(questionService).deleteQuestion(questionId);
 	}
+	
+	
+	/*
+	 * @Test void importQuestionsShouldReturnOkResponse() throws IOException { long
+	 * questionId = 1L; List<Question> mockQuestions = Collections.singletonList(new
+	 * Question(questionId, "Question", "Option 1", "Option 2", "Option 3",
+	 * "Option 4", "Answer","10", null, null));
+	 * when(questionService.importQuestionsFromExcel(Mockito.any(InputStream.class))
+	 * ) .thenReturn(mockQuestions);
+	 * 
+	 * // Creating a mock MultipartFile byte[] fileContent =
+	 * "mock file content".getBytes(); MultipartFile mockMultipartFile = new
+	 * MockMultipartFile("file", "mockFile.xlsx", "application/vnd.ms-excel",
+	 * fileContent);
+	 * 
+	 * // Calling the controller method List<Question> responseEntity =
+	 * questionService.importQuestionsFromExcel((InputStream) mockMultipartFile);
+	 * 
+	 * // Assertions assertEquals(HttpStatus.OK, ((ResponseEntity<List<Question>>)
+	 * responseEntity).getStatusCode()); assertEquals(mockQuestions,
+	 * responseEntity.getBody()); }
+	 * 
+	 * @Test void importQuestionsShouldReturnInternalServerError() throws
+	 * IOException { // Mocking the service to throw an IOException
+	 * when(yourService.importQuestionsFromExcel(Mockito.any(InputStream.class)))
+	 * .thenThrow(new IOException("Simulated error"));
+	 * 
+	 * // Creating a mock MultipartFile byte[] fileContent =
+	 * "mock file content".getBytes(); MultipartFile mockMultipartFile = new
+	 * MockMultipartFile("file", "mockFile.xlsx", "application/vnd.ms-excel",
+	 * fileContent);
+	 * 
+	 * // Calling the controller method ResponseEntity<List<Question>>
+	 * responseEntity = yourController.importQuestions(mockMultipartFile);
+	 * 
+	 * // Assertions assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,
+	 * responseEntity.getStatusCode()); assertEquals(null,
+	 * responseEntity.getBody()); // You may want to customize this part based on
+	 * your actual error handling logic }
+	 */
 }

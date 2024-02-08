@@ -22,6 +22,8 @@ public interface QuestionService {
 
 	List<Question> importQuestionsFromExcel(InputStream excelInputStream) throws IOException;
 
+	List<Question> getQuestionByCategoryName(String selectedCategory);
 
 	
+
 }

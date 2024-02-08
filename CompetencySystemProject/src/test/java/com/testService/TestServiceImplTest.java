@@ -19,7 +19,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.entity.TestManagement;
 import com.repository.TestRepository;
 import com.service.TestService;
 import com.service.implementation.TestServiceImpl;
@@ -38,33 +37,33 @@ public class TestServiceImplTest {
 
 	    @Test
 	    void testAddTest() {
-	        TestManagement testToAdd = new TestManagement();
+	        Test testToAdd = new Test();
 
 	        when(testRepository.save(testToAdd)).thenReturn(testToAdd);
 
-	        TestManagement addedTest = testService.addTest(testToAdd);
+	        Test addedTest = testService.addTest(testToAdd);
 
 	        assertNotNull(addedTest);
 	    }
 
 	    @Test
 	    void testUpdateTest() {
-	        TestManagement testToUpdate = new TestManagement();
+	        Test testToUpdate = new Test();
 
 	        when(testRepository.save(testToUpdate)).thenReturn(testToUpdate);
 
-	        TestManagement updatedTest = testService.updateTest(testToUpdate);
+	        Test updatedTest = testService.updateTest(testToUpdate);
 
 	        assertNotNull(updatedTest);
 	    }
 
 	    @Test
 	    void testGetTest() {
-	        List<TestManagement> tests = new ArrayList<>();
+	        List<Test> tests = new ArrayList<>();
 
 	        when(testRepository.findAll()).thenReturn(tests);
 
-	        List<TestManagement> resultTests = testService.getTest();
+	        List<Test> resultTests = testService.getTest();
 
 	        assertNotNull(resultTests);
 	        assertEquals(tests.size(), resultTests.size());
@@ -73,11 +72,11 @@ public class TestServiceImplTest {
 	    @Test
 	    void testGetTestById() {
 	        Long testId = 1L;
-	        TestManagement test = new TestManagement();
+	        Test test = new Test();
 
 	        when(testRepository.findById(testId)).thenReturn(Optional.of(test));
 
-	        TestManagement resultTest = testService.getTestById(testId);
+	        Test resultTest = testService.getTestById(testId);
 
 	        assertNotNull(resultTest);
 	    }

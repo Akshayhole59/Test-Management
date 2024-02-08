@@ -41,7 +41,7 @@ public class QuestionController {
 		return questionService.getAllQuestions();
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("{id}")
 	public ResponseEntity<Question> getQuestionById(@PathVariable Long id) {
 		try {
 			log.info("Fetching question by id: {}", id);
@@ -51,6 +51,28 @@ public class QuestionController {
 			return ResponseEntity.status(404).body(null); // or return ResponseEntity.notFound().build();
 		}
 	}
+	
+	@GetMapping("/getQuestion")
+	public ResponseEntity<List<Question>> getQuestionsByCategory(@RequestParam("selectedCategory") String selectedCategory) {
+	    try {
+	        log.info("Fetching questions by category: {}", selectedCategory);
+	        System.out.println("In the getQuestionByCategory");
+	        List<Question> questions = questionService.getQuestionByCategoryName(selectedCategory);
+
+	        if (questions.isEmpty()) {
+	            return ResponseEntity.notFound().build();
+	        }
+
+	        return ResponseEntity.ok(questions);
+	    } catch (QuestionNotFoundException ex) {
+	        log.error("Error fetching questions: {}", ex.getMessage());
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+	    } catch (Exception e) {
+	        log.error("Unexpected error fetching questions: {}", e.getMessage(), e);
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	    }
+	}
+	   
 
 	@PostMapping
 	public Question createQuestion(@RequestBody Question question) {

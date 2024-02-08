@@ -24,7 +24,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Table(name = "tests")
-public class TestManagement {
+public class Test {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

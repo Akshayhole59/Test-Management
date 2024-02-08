@@ -88,14 +88,10 @@ public class CategoryController {
 		try {
 			log.info("Deleting category with ID: {}", categoryId);
 
-			if (categoryService.exists(categoryId)) {
 				this.categoryService.deleteCategory(categoryId);
 				return ResponseEntity.ok().build();
-			} else {
-				log.error("Category not found with ID: {}", categoryId);
-				return ResponseEntity.status(404).body("Category not found with ID: " + categoryId);
-			}
-		} catch (Exception e) {
+		
+	     	} catch (Exception e) {
 			log.error("Error occurred while deleting category", e);
 			return ResponseEntity.status(500).body("Internal server error");
 		}

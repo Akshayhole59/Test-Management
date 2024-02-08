@@ -1,4 +1,5 @@
 package com.testService;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -18,13 +19,13 @@ import com.service.implementation.QuestionServiceImpl;
 @SpringBootTest
 public class QuestionServiceTest {
 
-    @Mock
-    private QuestionRepository questionRepository;
+	@Mock
+	private QuestionRepository questionRepository;
 
-    @InjectMocks
-    private QuestionServiceImpl questionService;
+	@InjectMocks
+	private QuestionServiceImpl questionService;
 
-    @Test
+	@Test
     public void testGetAllQuestions() {
         when(questionRepository.findAll()).thenReturn( List.of(
                 new Question(1L, "Question 1", "Option 1", "Option 2", "Option 3", "Option 4", "Answer 1", "10", null, null),
@@ -34,35 +35,62 @@ public class QuestionServiceTest {
         assertEquals(2, questionService.getAllQuestions().size());
     }
 
-    @Test
-    public void testGetQuestionById() {
-        long questionId = 1L;
-        Question question = new Question(questionId, "Question 1", "Option 1", "Option 2", "Option 3", "Option 4", "Answer 1","10", null, null);
+	@Test
+	public void testGetQuestionById() {
+		long questionId = 1L;
+		Question question = new Question(questionId, "Question 1", "Option 1", "Option 2", "Option 3", "Option 4",
+				"Answer 1", "10", null, null);
 
-        when(questionRepository.findById(questionId)).thenReturn(Optional.of(question));
+		when(questionRepository.findById(questionId)).thenReturn(Optional.of(question));
 
-        assertEquals(question, questionService.getQuestionById(questionId));
-    }
+		assertEquals(question, questionService.getQuestionById(questionId));
+	}
 
-    @Test
-    public void testSaveQuestion() {
-        Question questionToSave = new Question(null, "New Question", "Option 1", "Option 2", "Option 3", "Option 4", "Answer","5", null, null);
-        Question savedQuestion = new Question(1L, "New Question", "Option 1", "Option 2", "Option 3", "Option 4", "Answer","5", null, null);
+	@Test
+	public void testSaveQuestion() {
+		Question questionToSave = new Question(null, "New Question", "Option 1", "Option 2", "Option 3", "Option 4",
+				"Answer", "5", null, null);
+		Question savedQuestion = new Question(1L, "New Question", "Option 1", "Option 2", "Option 3", "Option 4",
+				"Answer", "5", null, null);
 
-        when(questionRepository.save(questionToSave)).thenReturn(savedQuestion);
+		when(questionRepository.save(questionToSave)).thenReturn(savedQuestion);
 
-        assertEquals(savedQuestion, questionService.saveQuestion(questionToSave));
-    }
+		assertEquals(savedQuestion, questionService.saveQuestion(questionToSave));
+	}
 
-    @Test
-    public void testDeleteQuestion() {
-        long questionId = 1L;
+	@Test
+	public void testDeleteQuestion() {
+		long questionId = 1L;
 
-        when(questionRepository.existsById(questionId)).thenReturn(true);
+		when(questionRepository.existsById(questionId)).thenReturn(true);
 
-        questionService.deleteQuestion(questionId);
+		questionService.deleteQuestion(questionId);
 
-        Mockito.verify(questionRepository).deleteById(questionId);
-    }
+		Mockito.verify(questionRepository).deleteById(questionId);
+	}
+
+	/*
+	 * @Test void testImportQuestionsFromExcel() throws Exception { // Initialize
+	 * mocks MockitoAnnotations.initMocks(this);
+	 * 
+	 * // Mock data InputStream excelInputStream = provide your test Excel file
+	 * input stream ; MockMultipartFile file = new MockMultipartFile("file",
+	 * "test.xlsx",
+	 * "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+	 * excelInputStream);
+	 * 
+	 * // Mock the behavior of the questionRepository.save method
+	 * when(questionRepository.save(any(Question.class))).thenAnswer(invocation -> {
+	 * Question savedQuestion = invocation.getArgument(0); savedQuestion.setId(1L);
+	 * // Mocking the ID for simplicity return savedQuestion; });
+	 * 
+	 * // Call the method under test List<Question> importedQuestions =
+	 * questionService.importQuestionsFromExcel(file.getInputStream());
+	 * 
+	 * // Verify the interactions verify(questionRepository,
+	 * times(importedQuestions.size())).save(any(Question.class));
+	 * 
+	 * // Assert the result assertEquals(importedQuestions.size(), expected size );
+	 * // Add more assertions based on your specific requirements }
+	 */
 }
-

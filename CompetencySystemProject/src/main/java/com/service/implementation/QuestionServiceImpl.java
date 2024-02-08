@@ -14,12 +14,14 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.entity.Category;
 import com.entity.Question;
-import com.entity.TestManagement;
+
 import com.exception.CategoryNotFoundException;
 import com.exception.QuestionNotFoundException;
 import com.repository.CategoryRepository;
 import com.repository.QuestionRepository;
+import com.service.CategoryService;
 import com.service.QuestionService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +35,9 @@ public class QuestionServiceImpl implements QuestionService {
 	
 	@Autowired
 	private CategoryRepository categoryRepository;
+	
+	@Autowired
+	private CategoryService categoryService;
 
     @Override
     public List<Question> getAllQuestions() {
@@ -65,8 +70,7 @@ public class QuestionServiceImpl implements QuestionService {
         questionRepository.deleteById(id);
     }
     
-    
-   
+  
 
     @Override
     public List<Question> importQuestionsFromExcel(InputStream excelInputStream) throws IOException {
@@ -102,6 +106,24 @@ public class QuestionServiceImpl implements QuestionService {
         cell.setCellType(CellType.STRING);
         return cell.getStringCellValue();
     }
+    
+    
+   public List<Question> getQuestionByCategoryName(String selectedCategory) {
+	   List<Question> question = new ArrayList<>();
+	   if(selectedCategory == null) {
+		   Category category = categoryService.getCategoryByName(selectedCategory);
+		   System.out.println(category);
+		   question = questionRepository.getQuestionByCategoryId(category.getCategory_id());
+		   System.out.println(question);
+	   }else {
+		   throw new CategoryNotFoundException("Category not found with name "+selectedCategory);
+	   }
+	   
+	   
+	return question;
+   }
+    
+    
 }
    
 

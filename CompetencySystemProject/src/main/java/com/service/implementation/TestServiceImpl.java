@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.entity.Question;
-import com.entity.TestManagement;
+import com.entity.Test;
 import com.exception.QuestionNotFoundException;
 import com.repository.QuestionRepository;
 import com.repository.TestRepository;
@@ -28,7 +28,7 @@ public class TestServiceImpl implements TestService {
 	private QuestionRepository questionRepository;
 
 	@Override
-	public TestManagement addTest(TestManagement exam) {
+	public Test addTest(Test exam) {
 		//Validation for Question 
 		validateQuestionArePresentInDatabase(exam);
 		//we need to fetch alln question by its id
@@ -37,7 +37,7 @@ public class TestServiceImpl implements TestService {
 		return repository.save(exam);
 	}
 	
-	 private void validateQuestionArePresentInDatabase(TestManagement exam) {
+	 private void validateQuestionArePresentInDatabase(Test exam) {
 			for(Question question : exam.getQuestions()) {
 				if(!questionRepository.existsById(question.getQuestionId())) {
 					throw new QuestionNotFoundException("Question not found with id: " + question.getQuestionId(), null);
@@ -47,7 +47,7 @@ public class TestServiceImpl implements TestService {
 		}
 
 	
-	private List<Question> fetchRecordsByItsId(TestManagement exam) {
+	private List<Question> fetchRecordsByItsId(Test exam) {
 		List<Question> questionList = new ArrayList<>();
 		for(Question question : exam.getQuestions()) {
 			long questionId = question.getQuestionId();
@@ -59,17 +59,17 @@ public class TestServiceImpl implements TestService {
 	}
 
 	@Override
-	public TestManagement updateTest(TestManagement exam) {
+	public Test updateTest(Test exam) {
 		return repository.save(exam);
 	}
 
 	@Override
-	public List<TestManagement> getTest() {
+	public List<Test> getTest() {
 		return new ArrayList<>(repository.findAll());
 	}
 
 	@Override
-	public TestManagement getTestById(Long testId) {
+	public Test getTestById(Long testId) {
 		return repository.findById(testId).get();
 	}
 

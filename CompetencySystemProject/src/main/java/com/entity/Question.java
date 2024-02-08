@@ -47,7 +47,7 @@ public class Question {
 
 	@JsonIgnore
 	@ManyToMany(mappedBy = "questions", cascade = CascadeType.ALL)
-	private List<TestManagement> tests;
+	private List<Test> tests;
 
 	
 	

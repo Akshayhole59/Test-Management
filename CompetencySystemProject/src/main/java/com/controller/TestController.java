@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.entity.Test;
 import com.entity.TestManagement;
 import com.exception.QuestionNotFoundException;
 import com.exception.TestIdNotExistException;
@@ -34,11 +35,11 @@ public class TestController {
 	TestService service;
 
 	@PostMapping
-	public ResponseEntity<?> addTest(@RequestBody TestManagement exam) {
+	public ResponseEntity<?> addTest(@RequestBody Test exam) {
 		try {
 			 System.out.println("In the add test");
 			 System.out.println(exam);
-			TestManagement test = service.addTest(exam);
+			Test test = service.addTest(exam);
 			log.info("addTest: Test added successfully with ID {}", test.getTestId());
 			return ResponseEntity.ok(test);
 		} catch (Exception e) {
@@ -56,7 +57,7 @@ public class TestController {
 		}
 
 		try {
-			TestManagement test = service.getTestById(testId);
+			Test test = service.getTestById(testId);
 			if (test != null) {
 				log.info("getTestById: Retrieved test with ID {}", testId);
 				return ResponseEntity.ok(test);
@@ -84,14 +85,14 @@ public class TestController {
 	}
 
 	@PutMapping("/{testId}")
-	public ResponseEntity<?> updateTest(@PathVariable Long testId, @RequestBody TestManagement updatedTest) {
+	public ResponseEntity<?> updateTest(@PathVariable Long testId, @RequestBody Test updatedTest) {
 		if (testId == null) {
 			log.error("Invalid request: Test ID is null");
 			return ResponseEntity.badRequest().body("Test ID cannot be null");
 		}
 
 		try {
-			TestManagement test = service.getTestById(testId);
+			Test test = service.getTestById(testId);
 			if (test != null) {
 				test.setTitle(updatedTest.getTitle());
 				test.setDescription(updatedTest.getDescription());
